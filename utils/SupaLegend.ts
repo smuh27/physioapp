@@ -30,7 +30,7 @@ const customSynced = configureSynced(syncedSupabase, {
   fieldCreatedAt: 'created_at',
   fieldUpdatedAt: 'updated_at',
   // Optionally enable soft deletes
-  fieldDeleted: 'deleted',
+  // fieldDeleted: 'deleted',
 });
 
 export const todos$ = observable(
@@ -63,4 +63,37 @@ export function addTodo(text: string) {
 
 export function toggleDone(id: string) {
   todos$[id].done.set((prev) => !prev);
+}
+
+///////////////////////////
+export const muscles$ = observable(
+  customSynced({
+    supabase,
+    collection: 'muscles',
+    select: (from) =>
+      from.select('id,name,muscle_group_id,is_active,created_at,updated_at'),
+    actions: ['read', 'create', 'update', 'delete'],
+    realtime: true,
+    // Persist data and pending changes locally
+    persist: {
+      name: 'muscles',
+      retrySync: true, // Persist pending changes and retry
+    },
+    retry: {
+      infinite: true, // Retry changes with exponential backoff
+    },
+  })
+);
+
+export function addMuscle(text: string) {
+  const id = generateId();
+  // Add keyed by id to the todos$ observable to trigger a create in Supabase
+  muscles$[id].assign({
+    id,
+    text,
+  });
+}
+
+export function toggleActive(id: string) {
+  muscles$[id].active.set((prev) => !prev);
 }

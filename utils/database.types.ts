@@ -34,6 +34,17 @@ export type Database = {
   }
   public: {
     Tables: {
+      muscles: {
+        Row: {
+          id: string
+          name: string | null
+          muscle_group_id: string | null
+          is_active: boolean | null
+          created_at: string | null
+          updated_at: string | null
+        }
+        Relationships: []
+      },
       todos: {
         Row: {
           counter: number
