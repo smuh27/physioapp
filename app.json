@@ -1,4 +1,8 @@
 {
   "name": "physioapp",
-  "slug": "physioapp"
+  "slug": "physioapp",
+  "scheme": "physioapp",
+  "plugins": [
+    "expo-router"
+  ]
 }
