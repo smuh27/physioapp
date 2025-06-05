@@ -2,15 +2,21 @@ import React from 'react';
 import { StyleSheet, Text } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { observer } from '@legendapp/state/react';
-import { muscles$ as _muscles$ } from '../../utils/SupaLegend';
+import { muscles$ as _muscles$ } from '../../utils/supabaseClient';
 import MuscleList from '../components/MuscleList';
+import { Session } from '@supabase/supabase-js';
 
-const MusclesPage = observer(() => {
+type MusclePageProps = {
+  userId: string;
+  session: Session;
+};
+
+const MusclesPage: React.FC<MusclePageProps> = observer(({ userId, session }) => {
   const muscles = _muscles$.get();
   return (
     <SafeAreaProvider>
       <SafeAreaView style={styles.container}>
-        <Text style={styles.heading}>Legend-State Example</Text>
+        <Text style={styles.heading}>Muscles</Text>
         <MuscleList muscles={muscles ? Object.values(muscles) : []} />
       </SafeAreaView>
     </SafeAreaProvider>

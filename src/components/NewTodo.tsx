@@ -1,6 +1,6 @@
 import React from 'react';
 import { TextInput, StyleSheet } from 'react-native';
-import { addTodo } from '../../utils/SupaLegend';
+import { addTodo } from '../../utils/supabaseClient';
 
 const NewTodo = ({ style }: { style?: any }) => {
   const [text, setText] = React.useState('');

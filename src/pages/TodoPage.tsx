@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, Text } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { observer } from '@legendapp/state/react';
-import { todos$ as _todos$ } from '../../utils/SupaLegend';
+import { todos$ as _todos$ } from '../../utils/supabaseClient';
 import NewTodo from '../components/NewTodo';
 import TodoList from '../components/TodoList';
 import ClearTodos from '../components/ClearTodos';
