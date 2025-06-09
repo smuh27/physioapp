@@ -34,6 +34,48 @@ export type Database = {
   }
   public: {
     Tables: {
+      clients: {
+        Row: {
+          id: string
+          email: string | null
+          name: string | null
+          age: number | null
+          height: number | null
+          weight: number | null
+          gender: string | null
+          user_id: string // from auth.users
+          is_active: boolean | null
+          created_at: string | null
+          updated_at: string | null
+        },
+        Insert: {
+          id: string
+          email: string | null
+          name: string | null
+          age: number | null
+          height: number | null
+          weight: number | null
+          gender: string | null
+          user_id: string // from auth.users
+          is_active: boolean | null
+          created_at: string | null
+          updated_at: string | null
+        },
+        Update: {
+          id: string
+          email: string | null
+          name: string | null
+          age: number | null
+          height: number | null
+          weight: number | null
+          gender: string | null
+          user_id: string // from auth.users
+          is_active: boolean | null
+          created_at: string | null
+          updated_at: string | null
+        },
+        Relationships: []
+      }
       muscles: {
         Row: {
           id: string
@@ -54,7 +96,7 @@ export type Database = {
           id: string
           text: string | null
           updated_at: string | null
-        }
+        },
         Insert: {
           counter?: number
           created_at?: string | null
@@ -63,7 +105,7 @@ export type Database = {
           id?: string
           text?: string | null
           updated_at?: string | null
-        }
+        },
         Update: {
           counter?: number
           created_at?: string | null
@@ -72,7 +114,7 @@ export type Database = {
           id?: string
           text?: string | null
           updated_at?: string | null
-        }
+        },
         Relationships: []
       }
     }

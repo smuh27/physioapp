@@ -1,14 +1,43 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Text, TextInput, TouchableOpacity } from 'react-native';
+import { showAlert } from '../../utils/alert';
+import { signUpWithEmail, signInWithEmail, resetPassword } from '../../utils/supabaseClient';
 
-const LoginPage = ({ onLogin }: { onLogin: () => void }) => {
+const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  const handleLogin = () => {
-    // Placeholder for authentication logic
-    onLogin();
-  };
+  async function signUp() {
+    setLoading(true);
+    
+    const { session, error } = await signUpWithEmail(email, password);
+
+    if (error) showAlert('Sign up', error.message)
+    else if (!session) showAlert('Sign up', 'Please check your inbox for email verification!')
+    setLoading(false);
+  }
+
+  async function signIn() {
+    setLoading(true);
+    
+    const error = await signInWithEmail(email, password);
+    
+    if (error) showAlert('Login Failed', error.message);
+    setLoading(false);
+  }
+
+  // TODO: implement forgot password component functionality
+  async function forgotPassword() {
+    setLoading(true);
+    
+    const error = await resetPassword(email);
+    
+    if (error) showAlert('Forgot Password', error.message);
+    else showAlert('Forgot Password', 'Please check your inbox for password reset instructions!');
+    
+    setLoading(false);
+  }
 
   return (
     <View style={styles.container}>
@@ -28,8 +57,11 @@ const LoginPage = ({ onLogin }: { onLogin: () => void }) => {
         onChangeText={setPassword}
         secureTextEntry
       />
-      <TouchableOpacity style={styles.button} onPress={handleLogin}>
+      <TouchableOpacity style={styles.button} onPress={signIn}>
         <Text style={styles.buttonText}>Login</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.button} onPress={signUp}>
+        <Text style={styles.buttonText}>Sign up</Text>
       </TouchableOpacity>
     </View>
   );

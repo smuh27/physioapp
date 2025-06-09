@@ -1,6 +1,6 @@
 import React from 'react';
 import { TouchableOpacity, Text, StyleSheet } from 'react-native';
-import { toggleDone } from '../../utils/SupaLegend';
+import { toggleDone } from '../../utils/supabaseClient';
 import { Tables } from '../../utils/database.types';
 
 const NOT_DONE_ICON = String.fromCodePoint(0x1f7e0);
