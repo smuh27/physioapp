@@ -1,42 +1,50 @@
-// app/(tabs)/_layout.tsx
-import { Tabs } from 'expo-router';
+import React, { useEffect, useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import Ionicons from '@expo/vector-icons/Ionicons';
-import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
+import { Stack, useRouter } from 'expo-router';
+import { supabase } from '../utils/supabaseClient';
 
-export default function TabsLayout() {
+export default function RootLayout() {
+  const [session, setSession] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const router = useRouter();
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+      setLoading(false);
+      // Redirect to login if not authenticated, else to tabs
+      if (!session && window.location.pathname !== '/login') {
+        router.replace('/login');
+      } else if (session && !window.location.pathname.startsWith('/tabs')) {
+        router.replace('/tabs');
+      }
+    });
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+      if (session) router.replace('/tabs');
+      else router.replace('/login');
+    });
+
+    return () => {
+      subscription?.unsubscribe?.();
+    };
+  }, []);
+
+  if (loading) return null;
+
   return (
     <>
       <StatusBar style="auto" />
-      <Tabs>
-        <Tabs.Screen
-          name="index"
-          options={{
-            title: 'Home',
-            tabBarIcon: () => <MaterialCommunityIcons name="home" size={24} />,
-            tabBarLabel: '',
-            headerTitleAlign: 'center',
-          }}
-        />
-        <Tabs.Screen
-          name="profile"
-          options={{
-            title: 'Profile',
-            tabBarIcon: () => <Ionicons name="person" size={24} />,
-            tabBarLabel: '',
-            headerTitleAlign: 'center',
-          }}
-        />
-        <Tabs.Screen
-          name="settings"
-          options={{
-            title: 'Settings',
-            tabBarIcon: () => <Ionicons name="settings-sharp" size={24} />,
-            tabBarLabel: '',
-            headerTitleAlign: 'center',
-          }}
-        />
-      </Tabs>
+      <Stack screenOptions={{ headerShown: false }}>
+        {!session ? (
+          <Stack.Screen name="login" />
+        ) : (
+          <Stack.Screen name="tabs" />
+        )}
+      </Stack>
     </>
   );
 }
