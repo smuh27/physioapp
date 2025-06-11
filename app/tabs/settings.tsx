@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
-import { signOut } from '../../utils/supabaseClient'
+import { signOut } from '../utils/supabaseClient'
 
 const settings = () => {
   return (

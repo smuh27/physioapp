@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { Stack, useRouter } from 'expo-router';
-import { supabase } from '../utils/supabaseClient';
+import { supabase } from './utils/supabaseClient';
 
 export default function RootLayout() {
   const [session, setSession] = useState(null);
@@ -13,8 +13,8 @@ export default function RootLayout() {
       setSession(session);
       setLoading(false);
       // Redirect to login if not authenticated, else to tabs
-      if (!session && window.location.pathname !== '/login') {
-        router.replace('/login');
+      if (!session && window.location.pathname !== '/auth/login') {
+        router.replace('/auth/login');
       } else if (session && !window.location.pathname.startsWith('/tabs')) {
         router.replace('/tabs');
       }
@@ -25,7 +25,7 @@ export default function RootLayout() {
     } = supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session);
       if (session) router.replace('/tabs');
-      else router.replace('/login');
+      else router.replace('/auth/login');
     });
 
     return () => {

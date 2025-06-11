@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
-import { supabase } from '../../utils/supabaseClient';
+import { supabase } from '../utils/supabaseClient';
 
 export default function ProfilePage() {
   const [user, setUser] = useState(null);
@@ -21,14 +21,11 @@ export default function ProfilePage() {
 
   return (
     <View style={styles.container}>
-      <View style={styles.avatarContainer}>
-        <Image
-          source={{ uri: 'https://ui-avatars.com/api/?name=' + encodeURIComponent(user.email) + '&background=4630EB&color=fff&size=128' }}
-          style={styles.avatar}
-        />
-      </View>
+      <Image
+        source={{ uri: 'https://ui-avatars.com/api/?name=User&background=4630EB&color=fff&size=128' }}
+        style={styles.avatar}
+      />
       <Text style={styles.heading}>Profile</Text>
-      <Text style={styles.text}>Age: 25</Text>
       <Text style={styles.text}>Email: {user.email}</Text>
       <Text style={styles.text}>User ID: {user.id}</Text>
     </View>
@@ -52,17 +49,12 @@ const styles = StyleSheet.create({
     color: '#555',
     marginBottom: 8,
   },
-  avatarContainer: {
-    marginBottom: 24,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
   avatar: {
     width: 96,
     height: 96,
     borderRadius: 48,
+    marginBottom: 16,
     borderWidth: 2,
     borderColor: '#4630EB',
-    backgroundColor: '#eee',
   },
 });
