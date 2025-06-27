@@ -190,11 +190,11 @@ export function addClient(email: string, name: string, age: number, height: numb
 export async function getClientByAuthUserId(user_id: string) {
   const { data: client, error, status } = await supabase
     .from('clients')
-    .select(`id,name,email`)
+    .select(`*`)
     .eq('user_id', user_id)
     .single(); // Use .single() if you expect only one result
 
-    return {client, error, status}; 
+    return { client, error, status }; 
 }
 
 export async function updateClient(updates: Partial<Tables<'clients'>>) {

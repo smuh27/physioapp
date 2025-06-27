@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { StyleSheet, View, Text, TextInput, TouchableOpacity } from 'react-native';
 import { showAlert } from '../utils/alert';
 import { signUpWithEmail, signInWithEmail, resetPassword } from '../utils/supabaseClient';
