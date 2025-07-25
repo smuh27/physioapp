@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, TextInput, Image } from 'react-native';
 import OnboardingStepOne from './components/onboarding/onboardingStep1';
 import OnboardingStepTwo from './components/onboarding/onboardingStep2';
@@ -10,7 +10,7 @@ import { router } from 'expo-router';
 import { getAge } from './utils/helpers';
 
 const Onboarding = () => {
-  // const session = useSession();
+  const session = useSession();
   const [name, setName] = useState('');
   const [gender, setGender] = useState('');
   const [birthday, setBirthday] = useState<Date>();
@@ -29,32 +29,33 @@ const Onboarding = () => {
   };
 
   const completeOnboarding = async () => {
-    // todo: update clients table using supabase update query
-    setName('test'); setBirthday(new Date('2000-08-16')); setHeight('175'); setWeight('150');
-    showAlert('Onboarding complete', `Name: ${name}`)
-    // const { client, error, status } = await getClientByAuthUserId(session?.user?.id);
-    // client.name = name;
-    // client.birthday = birthday;
-    // client.height = height;
-    // client.weight = weight;
-    // client.gender = gender;
+    setName('test'); setBirthday(new Date('2000-08-16')); setHeight('175'); setWeight('150'); setGender(gender);
+    showAlert('Onboarding complete', `Name: ${name},\nBirthday: ${birthday},\nHeight: ${height},\nWeight: ${weight},\nGender: ${gender}`)
 
-    // if (client){
-    //   let error = await updateClient(client);
-    //   if (error){
-    //     showAlert('Error', error.message);
-    //   }
-    //   else{
-    //     showAlert(`Onboarding complete! name=${name}, gender=${gender}, age=${getAge(birthday)}, height=${height}, weight=${weight}`);
-    //     router.replace('/tabs');
-    //   }
-    // }
-    // else if (error){
-    //   showAlert('Error', error.message);
-    // }
+    // todo: update clients table using supabase update query
+    const { client, error, status } = await getClientByAuthUserId(session?.user?.id);
+    if (client){
+      client.name = name;
+      client.birthday = birthday;
+      client.height = height;
+      client.weight = weight;
+      client.gender = gender;
+
+      let error = await updateClient(client);
+      if (error){
+        showAlert('Error', error.message);
+      }
+      else{
+        showAlert(`Onboarding complete! name=${name}, gender=${gender}, age=${getAge(birthday)}, height=${height}, weight=${weight}`);
+        router.replace('/tabs');
+      }
+    }
+    else if (error){
+      showAlert('Error', error.message);
+    }
   }
 
-  const renderStepIndicator = async () => {
+  const renderStepIndicator = () => {
     // const { client, } = await getClientByAuthUserId(session?.user?.id);
     // if (client){
     //   showAlert(`Client found: ${client.name}!`);

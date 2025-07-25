@@ -24,9 +24,6 @@ export default function RootLayout() {
       if (!session && window.location.pathname !== '/auth/login') {
         router.replace('/auth/login');
       } else if (session && !window.location.pathname.startsWith('/tabs')) {
-        // const { client, error, status } = await getClientByAuthUserId(session.user.id);
-        // if (client){
-        //   setClient(client);
           const { data: onboarded, } = await clientIsOnboarded(session.user.id);
           setIsOnboarded(onboarded);
           if (!onboarded && !window.location.pathname.startsWith('/onboarding')) {
@@ -34,11 +31,6 @@ export default function RootLayout() {
           } else {
             router.replace('/tabs');
           }
-        // }
-        // else if (error) {
-        //   showAlert('Error', error.message);
-        //   router.replace('/auth/login');
-        // }
       }
     }
 
@@ -48,9 +40,6 @@ export default function RootLayout() {
       async (_event, session) => {
         setSession(session);
         if (session) {
-          // const { client, error: clientError, status } = await getClientByAuthUserId(session.user.id);
-          // if (client) {
-          //   setClient(client);
             const { data: onboarded, error } = await clientIsOnboarded(session.user.id);
             setIsOnboarded(onboarded);
             if (error){
@@ -62,10 +51,6 @@ export default function RootLayout() {
             } else {
               router.replace('/tabs');
             }
-          // }
-          // else if (clientError){
-          //   showAlert('Error', clientError.message);
-          // }
         } else {
           router.replace('/auth/login');
         }
@@ -81,8 +66,7 @@ export default function RootLayout() {
   if (loading) return null;
 
   return (
-    // <SessionContext.Provider value={session}>
-    <>
+    <SessionContext.Provider value={session}>
       {/* your navigation stack, tabs, etc. */}
       <StatusBar style="auto" />
       <Stack screenOptions={{ headerShown: false }}>
@@ -94,6 +78,6 @@ export default function RootLayout() {
           <Stack.Screen name="tabs" />
         )}
       </Stack>
-    </>
+    </SessionContext.Provider>
   );
 }
